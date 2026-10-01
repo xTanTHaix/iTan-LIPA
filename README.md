@@ -5,7 +5,7 @@
 
 </div>
 
-<img width="100%" alt="LIPA — Sovereign Mission Control Co-Pilot Cockpit" src="md/image/A (1).jpg" />
+<img width="2752" height="1536" alt="Sovereign_Mission_Control_Cockpit_Diagram" src="https://github.com/user-attachments/assets/1ac22bcd-7bfc-4ead-88c9-ee2489c436de" />
 
 <div align="center">
 

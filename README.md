@@ -445,6 +445,11 @@ Each run appends a JSON line: `timestamp`, `files`, `verdict`, `finding_count`, 
 
 ## 🤖 MCP Server Integration
 
+<details>
+<summary><b>🔌 Click to expand: Model Context Protocol (MCP) Setup & Tool Reference</b></summary>
+
+<br>
+
 LIPA ships a **Model Context Protocol (MCP) server** so any MCP-compatible AI assistant — Claude Desktop, Cursor, Windsurf, Gemini Code Assist — can call the full 4-stage audit pipeline as a native tool call.
 
 ### 1. Install
@@ -581,6 +586,8 @@ info = get_lipa_info()
 print(info["tools"])
 # ['audit_file', 'audit_workspace', 'get_lipa_info']
 ```
+
+</details>
 
 ---
 

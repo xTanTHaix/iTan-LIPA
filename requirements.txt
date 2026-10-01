@@ -1,0 +1,10 @@
+# LIPA — Local Ingress Pre-flight Auditor
+#
+# Core runtime: zero external dependencies (stdlib only)
+# This file lists development and testing dependencies only.
+
+# Test runner
+pytest>=7.0
+
+# Optional: MCP server support (see requirements-mcp.txt)
+# pip install fastmcp

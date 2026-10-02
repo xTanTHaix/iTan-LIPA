@@ -23,6 +23,18 @@ import sys
 from pathlib import Path
 from typing import Optional
 
+# Ensure UTF-8 encoding for stdio on Windows (prevents cp874 crashes)
+if sys.platform == "win32":
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stdin, "reconfigure"):
+            sys.stdin.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 # FastMCP is the only non-stdlib dependency in this entire project.
 # It must be installed in the same environment as LIPA:
 #   pip install fastmcp
@@ -35,8 +47,13 @@ except ImportError as _err:
         f"Original error: {_err}"
     )
 
-from .audit import AuditStatus, IssueReporter
-from .core import LocalIngressAuditor
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from lipa.audit import AuditStatus, IssueReporter
+    from lipa.core import LocalIngressAuditor
+else:
+    from .audit import AuditStatus, IssueReporter
+    from .core import LocalIngressAuditor
 
 # ---------------------------------------------------------------------------
 # Server instance

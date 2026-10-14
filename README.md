@@ -499,16 +499,36 @@ pip install -r requirements-mcp.txt
 ### 3. Run the Server
 
 ```bash
-# Linux / WSL / macOS
-PYTHONPATH=src python -m lipa.mcp_server
+# Recommended (Direct Script - Auto resolves sys.path)
+python src/lipa/mcp_server.py
 
-# Windows PowerShell
+# Alternative (Module run)
+# Linux / WSL / macOS:
+PYTHONPATH=src python -m lipa.mcp_server
+# Windows PowerShell:
 $env:PYTHONPATH="src"; python -m lipa.mcp_server
 ```
 
 The server communicates via **JSON-RPC over stdio** — the universal transport for all local MCP clients.
 
-### 4. Connect: Claude Desktop
+### 4. Connect: LM Studio
+
+In LM Studio's MCP Settings tab:
+1. Select **On this computer**.
+2. **Command**: Absolute path to Python executable in your venv:
+   ```text
+   L:\iTan-LIPA\.venv\Scripts\python.exe
+   ```
+3. **Arguments**: Absolute path to `mcp_server.py` (single argument, no `-m` needed):
+   ```text
+   L:\iTan-LIPA\src\lipa\mcp_server.py
+   ```
+4. Click **Connect** / **Retry connection**.
+
+> [!TIP]
+> Specifying the direct path to `src\lipa\mcp_server.py` in **Arguments** is the cleanest approach in GUI clients. The script automatically detects and injects `src` into Python's module search path, eliminating any need for extra environment variables or multi-line `-m` flags.
+
+### 5. Connect: Claude Desktop
 
 Edit `claude_desktop_config.json`:
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
@@ -523,10 +543,7 @@ Edit `claude_desktop_config.json`:
   "mcpServers": {
     "lipa": {
       "command": "python",
-      "args": ["-m", "lipa.mcp_server"],
-      "env": {
-        "PYTHONPATH": "C:\\Users\\<you>\\iTan-LIPA\\src"
-      }
+      "args": ["C:\\Users\\<you>\\iTan-LIPA\\src\\lipa\\mcp_server.py"]
     }
   }
 }
@@ -534,7 +551,7 @@ Edit `claude_desktop_config.json`:
 
 Restart Claude Desktop — LIPA tools appear automatically in the tools list.
 
-### 5. Connect: Cursor / Windsurf
+### 6. Connect: Cursor / Windsurf
 
 Create `.cursor/mcp.json` (or `.windsurf/mcp.json`) in your workspace root:
 
@@ -543,9 +560,7 @@ Create `.cursor/mcp.json` (or `.windsurf/mcp.json`) in your workspace root:
   "mcpServers": {
     "lipa": {
       "command": "python",
-      "args": ["-m", "lipa.mcp_server"],
-      "cwd": "C:\\Users\\<you>\\iTan-LIPA",
-      "env": { "PYTHONPATH": "src" }
+      "args": ["src/lipa/mcp_server.py"]
     }
   }
 }
@@ -554,7 +569,7 @@ Create `.cursor/mcp.json` (or `.windsurf/mcp.json`) in your workspace root:
 > [!TIP]
 > On Linux/WSL replace the Windows path with the POSIX path: `/mnt/l/iTan-LIPA`
 
-### 6. Natural Language Prompts
+### 7. Natural Language Prompts
 
 Once connected, ask your AI assistant in plain language:
 
@@ -566,7 +581,7 @@ Once connected, ask your AI assistant in plain language:
 | *"Run strict — treat warnings as errors"* | `audit_file(..., strict=True)` |
 | *"What can LIPA detect?"* | `get_lipa_info()` |
 
-### 7. Smoke Test (no MCP client needed)
+### 8. Smoke Test (no MCP client needed)
 
 ```python
 import sys
